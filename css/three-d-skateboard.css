@@ -1,0 +1,1019 @@
+* {
+  transform-style: preserve-3d;
+}
+
+.scene {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+}
+
+.skateboard {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotateX(var(--skateboard-rotatation-x))
+    rotateZ(var(--skateboard-rotatation-z));
+  cursor: move;
+}
+
+.skateboard-flip {
+  animation: kickflip 6s ease-in forwards;
+}
+
+.deck,
+.skateboard {
+  --deck-length: 400px;
+  --aspect-ratio: 3.9;
+  --skateboard-rotatation-x: 45deg;
+  --skateboard-rotatation-z: 15deg;
+  --clr-hardware-light: hsl(240, 5%, 82%);
+  --clr-hardware-dark: hsl(240, 5%, 32%);
+  --clr-hardware-cross: hsl(340, 13%, 9%);
+  --clr-trucks-base: hsl(75, 2%, 48%);
+  --clr-trucks-base-light: hsl(75, 2%, 58%);
+  --clr-trucks-main: hsl(180, 1%, 66%);
+  width: var(--deck-length);
+  height: calc(var(--deck-length) / var(--aspect-ratio));
+}
+
+/* COMMON STYLES FOR DECK LAYER */
+.deck-layer {
+  --deck-border-radius: 50px 65px 65px 50px / 55px 55px 55px 55px;
+  --deck-top-light: 45%;
+  --wood-light: 55%;
+  position: absolute;
+  inset: 0;
+  border-radius: var(--deck-border-radius);
+  background-color: hsl(30, 72%, var(--wood-light));
+  transform: translateZ(var(--tz));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* DECK TOP LAYER */
+.deck-layer.top {
+  border: 1px solid hsl(0, 85%, var(--deck-top-light));
+  box-shadow: inset 0 0 4px 1px hsla(0, 85%, var(--deck-top-light), 0.5);
+  --tz: 6px;
+  background-image: url("deck-top.svg");
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* DECK BOTTOM LAYER */
+.deck-layer.bottom {
+  --deck-top-light: 45%;
+  background-color: hsl(0, 85%, var(--deck-top-light));
+  --tz: 0px;
+  background-image: url("../img/baker-logo.webp");
+  background-size: 210%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: rotateX(180deg);
+}
+
+.deck-layer:nth-child(3) {
+  --tz: 1px;
+  --wood-light: 34%;
+}
+
+.deck-layer:nth-child(4) {
+  --tz: 2px;
+}
+
+.deck-layer:nth-child(5) {
+  --tz: 3px;
+  --wood-light: 38%;
+}
+
+.deck-layer:nth-child(6) {
+  --tz: 4px;
+  --wood-light: 70%;
+}
+
+.deck-layer:nth-child(7) {
+  --tz: 5px;
+  --wood-light: 45%;
+}
+
+/* WHEELS ------------------------------------------------------------- */
+.wheels {
+  --wheel-diameter: 28px;
+  --wheel-contact-patch: 13px;
+  --wheel-X-distance: 58px;
+  --wheel-Y-distance: 9px;
+  --wheel-light: 10%;
+  position: absolute;
+  inset: 0;
+  margin-inline: var(--wheel-X-distance);
+  /* distance from deck */
+  transform: translateZ(-28px);
+}
+
+.wheel {
+  position: absolute;
+  width: var(--wheel-diameter);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  bottom: -12px;
+  transform: rotateX(90deg);
+}
+
+/* LEFT WHEELS  */
+.wheel:nth-child(2),
+.wheel:nth-child(3) {
+  right: 0;
+}
+
+/* RIGHT WHEELS */
+.wheel:nth-child(4),
+.wheel:nth-child(3) {
+  top: -12px;
+  transform: rotateX(90deg) rotateY(180deg);
+}
+
+.wheel-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform: translateZ(var(--tz-wheel));
+  background-color: hsl(240, 5%, var(--wheel-light));
+}
+
+/* PSEUDO ELEMENTS TO DECORATE OUTER and INNER SIDE OF WHEEL */
+.wheel-layer:nth-child(1)::after,
+.wheel-layer:nth-child(1)::before,
+.wheel-layer:nth-child(15)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.wheel-layer:nth-child(1)::before,
+.wheel-layer:nth-child(15)::before {
+  --trucks-diameter: 11px;
+  --clr-wheel-inner-hardware: hsl(0, 49%, 15%);
+  width: var(--trucks-diameter);
+  background-color: var(--clr-trucks-main);
+  border-color: var(--clr-trucks-main);
+  outline: 1px solid var(--clr-wheel-inner-hardware);
+}
+
+.wheel-layer:nth-child(1)::before {
+  width: 5px;
+  background-color: hsl(219, 7%, 62%);
+  border: 2px solid hsl(1, 56%, 43%);
+  outline: 1px solid hsl(214, 4%, 33%);
+}
+
+.wheel-layer:nth-child(1)::after {
+  width: 4px;
+  background: radial-gradient(
+    circle,
+    rgba(206, 196, 213, 1) 0%,
+    rgba(36, 39, 51, 1) 50%,
+    rgba(181, 172, 159, 1) 100%
+  );
+  box-shadow: 0 0 2px 2px hsla(220, 3%, 21%, 0.447);
+}
+
+.wheel-layer:nth-child(1) {
+  --tz-wheel: 0px;
+  --wheel-light: 70%;
+  border: 4px solid hsl(60, 14%, 93%);
+  background: radial-gradient(
+    circle,
+    hsl(60, 1%, 49%) 0%,
+    hsl(60, 10%, 84%) 50%,
+    hsl(60, 14%, 85%) 100%
+  );
+}
+
+.wheel-layer:nth-child(2) {
+  --tz-wheel: 1px;
+  --wheel-light: 68%;
+}
+
+.wheel-layer:nth-child(3) {
+  --tz-wheel: 2px;
+  --wheel-light: 66%;
+}
+
+.wheel-layer:nth-child(4) {
+  --tz-wheel: 3px;
+  --wheel-light: 64%;
+}
+
+.wheel-layer:nth-child(5) {
+  --tz-wheel: 4px;
+  --wheel-light: 63%;
+}
+
+.wheel-layer:nth-child(6) {
+  --tz-wheel: 5px;
+  --wheel-light: 61%;
+}
+
+.wheel-layer:nth-child(7) {
+  --tz-wheel: 6px;
+  --wheel-light: 59%;
+}
+
+.wheel-layer:nth-child(8) {
+  --tz-wheel: 7px;
+  --wheel-light: 57%;
+}
+
+.wheel-layer:nth-child(9) {
+  --tz-wheel: 8px;
+  --wheel-light: 55%;
+}
+
+.wheel-layer:nth-child(10) {
+  --tz-wheel: 9px;
+  --wheel-light: 53%;
+}
+
+.wheel-layer:nth-child(11) {
+  --tz-wheel: 10px;
+  --wheel-light: 51%;
+}
+
+.wheel-layer:nth-child(12) {
+  --tz-wheel: 11px;
+  --wheel-light: 49%;
+}
+
+.wheel-layer:nth-child(13) {
+  --tz-wheel: 12px;
+  --wheel-light: 47%;
+}
+.wheel-layer:nth-child(14) {
+  --tz-wheel: 13px;
+  --wheel-light: 45%;
+}
+
+.wheel-layer:nth-child(15) {
+  --tz-wheel: 14px;
+  --wheel-light: 42%;
+  background-image: url("../img/wheels-graphic.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  filter: brightness(95%) saturate(77%) grayscale(20%);
+}
+
+.wheel-layer:nth-child(15)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: hsl(240, 5%, var(--wheel-light));
+  backface-visibility: hidden;
+  transform: rotateX(180deg);
+}
+
+/* To avoid empty spaces between the layers */
+.wheel-layer:nth-child(8)::after,
+.wheel-layer:nth-child(8)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--wheel-diameter);
+  height: var(--wheel-contact-patch);
+  background-image: linear-gradient(
+    to bottom,
+    hsl(240, 6%, 70%) 0%,
+    hsl(240, 5%, 42%) 100%
+  );
+}
+
+.wheel-layer:nth-child(8)::before {
+  transform: rotateX(90deg);
+}
+
+.wheel-layer:nth-child(8)::after {
+  transform: rotateX(90deg) rotateY(90deg);
+}
+
+/* --------------------------------------------------------------------- */
+/* HARDWARE ------------------------------------------------------------ */
+
+.trucks-base {
+  --trucks-base-width: 40px;
+  --trucks-base-height: 30px;
+  --clr-trucks-base-dark: hsl(240, 3%, 25%);
+  --clr-trucks-base-text-background: hsl(75, 2%, 40%);
+  position: relative;
+  width: var(--trucks-base-width);
+  height: var(--trucks-base-height);
+  margin-inline: 50px;
+}
+
+.trucks-base-text {
+  position: absolute;
+  margin: auto;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 0.2rem;
+  text-transform: uppercase;
+  width: 12ch;
+  border: 0.5px solid var(--clr-trucks-base-dark);
+  border-radius: 100vw;
+  padding: 0.2em 0.5em;
+  color: var(--clr-trucks-base);
+  background-color: var(--clr-trucks-base-text-background);
+  text-shadow: 0.1px 0.2px 0 hsla(0, 0%, 0%, 0.4),
+    -0.1px -0.2px 0 hsl(0, 0%, 100%);
+  text-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.independent {
+  inset: auto 0 0.5px 0;
+}
+
+.truck-co {
+  inset: 0.5px 0 auto;
+}
+
+.trucks-base-layer {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(var(--tz-trucks-base));
+  background-color: var(--clr-trucks-base);
+  display: grid;
+  align-content: center;
+  outline: 0.5px solid var(--clr-trucks-base-dark);
+}
+
+.trucks-base-layer:nth-child(1) {
+  --tz-trucks-base: 0px;
+}
+
+.trucks-base-layer:nth-child(2) {
+  --tz-trucks-base: 0.5px;
+}
+
+.trucks-base-layer:nth-child(3) {
+  --tz-trucks-base: 1px;
+}
+
+.trucks-base-layer:nth-child(4) {
+  --tz-trucks-base: 1.5px;
+}
+
+.trucks-base-layer:nth-child(5) {
+  --tz-trucks-base: 2px;
+}
+
+.trucks-base-center-piece {
+  position: relative;
+  height: calc(var(--trucks-base-height) / 3.2);
+}
+
+.trucks-base-center-piece-outer {
+  position: relative;
+  width: calc(var(--trucks-base-width) / 2);
+  height: calc(var(--trucks-base-height) / 3.2);
+}
+
+.trucks-base-center-piece-outer::before {
+  content: "";
+  position: absolute;
+  width: calc(var(--trucks-base-width) / 4.8);
+  inset: 0;
+  background-color: var(--clr-trucks-base-light);
+  transform-origin: left;
+  transform: rotateY(-75deg);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+}
+
+.trucks-base-center-piece-outer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--clr-trucks-base-light);
+  transform-origin: right;
+  transform: rotateY(25deg);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+}
+
+.trucks-base-center-piece-outer-side {
+  position: absolute;
+  inset: 0;
+  transform-origin: top;
+  transform: rotateX(90deg);
+}
+
+.trucks-base-center-piece-outer-side::before,
+.trucks-base-center-piece-outer-side::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(100% 0, 0 0, 10% 90%);
+}
+
+.trucks-base-center-piece-outer-side::after {
+  background-color: var(--clr-trucks-base-light);
+  outline: 0.5px solid var(--clr-trucks-base-text-background);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+  transform: translateZ(-9.5px);
+}
+
+.trucks-base-center-piece-outer-side::before {
+  background-color: var(--clr-trucks-base-light);
+  outline: 0.5px solid var(--clr-trucks-base-text-background);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+}
+
+.trucks-base-center-piece-inner {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: calc(var(--trucks-base-width) / 2);
+  height: calc(var(--trucks-base-height) / 3.2);
+  background-color: var(--clr-trucks-base-light);
+  transform-origin: right;
+}
+
+.trucks-base-center-piece-inner .base {
+  position: absolute;
+  inset: 0 0 0 8px;
+  transform-origin: right;
+  transform: rotateY(80deg);
+  background-color: var(--clr-trucks-base-light);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+}
+
+.trucks-base-center-piece-inner .bolts-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform-origin: right;
+  transform: translateZ(var(--tz-bolts));
+  background-color: var(--clr-trucks-base-dark);
+  outline: 1px solid var(--clr-trucks-base);
+  border: 0.5px solid var(--clr-trucks-base-dark);
+}
+
+.trucks-base-center-piece-inner .bolts-layer:nth-child(1) {
+  --tz-bolts: 0px;
+}
+
+.trucks-base-center-piece-inner .bolts-layer:nth-child(2) {
+  --tz-bolts: -0.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-layer:nth-child(3) {
+  --tz-bolts: -1px;
+}
+
+.trucks-base-center-piece-inner .bolts-layer:nth-child(4) {
+  --tz-bolts: -1.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-layer:nth-child(5) {
+  --tz-bolts: -2px;
+}
+
+.trucks-base-center-piece-inner .bolts {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: rotateY(85deg);
+  border-radius: 50%;
+  outline: 1px solid var(--clr-trucks-base);
+  border: 0.5px solid var(--clr-trucks-base-dark);
+  z-index: 2;
+}
+
+.trucks-base-center-piece-inner .bushings-layer {
+  --clr-bushings: hsl(20, 72%, 43%);
+  border-radius: 50%;
+  position: absolute;
+  inset: 0;
+  transform: translateZ(var(--tz-bushings));
+  background-color: var(--clr-bushings);
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(6) {
+  --tz-bushings: -2.5px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(7) {
+  --tz-bushings: -3px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(8) {
+  --tz-bushings: -3.5px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(9) {
+  --tz-bushings: -4px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(10) {
+  --tz-bushings: -4.5px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(11) {
+  --tz-bushings: -5px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(12) {
+  --tz-bushings: -5.5px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(13) {
+  --tz-bushings: -6px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(14) {
+  --tz-bushings: -6.5px;
+}
+
+.trucks-base-center-piece-inner .bushings-layer:nth-child(15) {
+  --tz-bushings: -7px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer {
+  --bolts-top-layer-diameter: 1px;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  transform-origin: right;
+  background-color: var(--clr-trucks-base-light);
+  border-color: var(--clr-trucks-base);
+  border-style: solid;
+  border-width: var(--bolts-top-layer-diameter);
+  transform: translateZ(var(--tz-bolts-top));
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(16) {
+  --tz-bolts-top: -7.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(17) {
+  --tz-bolts-top: -8px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(18) {
+  --tz-bolts-top: -8.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(19) {
+  --tz-bolts-top: -9px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(20) {
+  --tz-bolts-top: -9.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(21) {
+  --tz-bolts-top: -10px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(22) {
+  --tz-bolts-top: -10.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(23) {
+  --tz-bolts-top: -11px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(24) {
+  --tz-bolts-top: -11.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(25) {
+  --tz-bolts-top: -12px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(26) {
+  --tz-bolts-top: -12.5px;
+}
+
+.trucks-base-center-piece-inner .bolts-top-layer:nth-child(27) {
+  --tz-bolts-top: -13px;
+}
+
+.trucks-base-center-piece-inner .base::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 28px;
+  transform-origin: left;
+  transform: rotateY(85deg);
+  background-color: var(--clr-trucks-base-light);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+}
+
+.trucks-base-center-piece-inner::before,
+.trucks-base-center-piece-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 12px;
+  width: 150%;
+  clip-path: polygon(100% 0, -50% 0, 93% 100%);
+  background-color: var(--clr-trucks-base-light);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-main);
+}
+
+.trucks-base-center-piece-inner::before {
+  transform-origin: top;
+  transform: rotateX(90deg) translateX(-10px);
+}
+
+.trucks-base-center-piece-inner::after {
+  transform-origin: bottom;
+  transform: rotateX(90deg) translateY(12px) translateZ(2.5px) translateX(-10px);
+}
+
+.tail .trucks-base-center-piece {
+  transform: rotate(180deg);
+}
+
+.deck-layer.top .trucks-base {
+  outline: unset;
+}
+
+.trucks-base.nose {
+  left: 5px;
+}
+
+.trucks-base.tail {
+  right: 5px;
+}
+
+.hardware {
+  --hardware-size: 5px;
+  --distance-from-truck-base: 2px;
+  position: absolute;
+  width: var(--hardware-size);
+  aspect-ratio: 1;
+  background-color: var(--clr-hardware-light);
+  border-radius: 50%;
+}
+
+.trucks-base.tail > .hardware {
+  background-color: var(--clr-hardware-dark);
+}
+
+/* HARDWARE CROSS */
+.hardware::after,
+.hardware::before {
+  content: "";
+  font-size: var(--hardware-size);
+  position: absolute;
+  width: 1px;
+  height: calc(var(--hardware-size) / 2);
+  background-color: var(--clr-hardware-cross);
+  inset: 0;
+  margin: auto;
+  transform: rotate(45deg);
+}
+
+.hardware::after {
+  width: calc(var(--hardware-size) / 2);
+  height: 1px;
+  transform: rotate(45deg);
+}
+
+.hardware:nth-child(even)::after,
+.hardware:nth-child(even)::before {
+  transform: rotate(25deg);
+}
+
+.hardware:nth-child(1),
+.hardware:nth-child(4) {
+  left: var(--distance-from-truck-base);
+}
+
+.hardware:nth-child(1),
+.hardware:nth-child(2) {
+  top: var(--distance-from-truck-base);
+}
+
+.hardware:nth-child(2),
+.hardware:nth-child(3) {
+  right: var(--distance-from-truck-base);
+  background-color: var(--clr-hardware-dark);
+}
+
+.hardware:nth-child(3),
+.hardware:nth-child(4) {
+  bottom: var(--distance-from-truck-base);
+}
+
+.hardware-back {
+  --hardware-size: 2px;
+  outline: 1px solid var(--clr-hardware-light);
+  background-color: var(--clr-hardware-dark);
+}
+
+.hardware-back::before,
+.hardware-back::after {
+  display: none;
+}
+
+/* ----------------------------------------------------- */
+/* END OF HARDWARE ---------------------------- */
+/* ----------------------------------------------------- */
+
+/* ----------------------------------------------------- */
+/* TRUCKS ---------------------------------------------- */
+/* ----------------------------------------------------- */
+.trucks {
+  --from-deck-edge: 16px;
+  --wheel-center: 9px;
+  position: absolute;
+  inset: var(--from-deck-edge) auto var(--from-deck-edge) var(--wheel-center);
+  width: 11px;
+}
+
+.trucks.tail {
+  inset: var(--from-deck-edge) var(--wheel-center) var(--from-deck-edge) auto;
+}
+
+.truck-layer {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(var(--rz-truck));
+  background-color: var(--clr-trucks-main);
+}
+
+.truck-layer:nth-child(1) {
+  --rz-truck: 0deg;
+}
+
+.truck-layer:nth-child(2) {
+  --rz-truck: 10deg;
+}
+
+.truck-layer:nth-child(3) {
+  --rz-truck: 20deg;
+}
+.truck-layer:nth-child(4) {
+  --rz-truck: 30deg;
+}
+
+.truck-layer:nth-child(5) {
+  --rz-truck: 40deg;
+}
+
+.truck-layer:nth-child(6) {
+  --rz-truck: 50deg;
+}
+.truck-layer:nth-child(7) {
+  --rz-truck: 60deg;
+}
+
+.truck-layer:nth-child(8) {
+  --rz-truck: 70deg;
+}
+
+.truck-layer:nth-child(9) {
+  --rz-truck: 80deg;
+}
+
+.truck-layer:nth-child(10) {
+  --rz-truck: 90deg;
+}
+
+.truck-layer:nth-child(11) {
+  --rz-truck: 100deg;
+}
+
+.truck-layer:nth-child(12) {
+  --rz-truck: 110deg;
+}
+
+.truck-layer:nth-child(13) {
+  --rz-truck: 120deg;
+}
+
+.truck-layer:nth-child(14) {
+  --rz-truck: 130deg;
+}
+
+.truck-layer:nth-child(15) {
+  --rz-truck: 140deg;
+}
+
+.truck-layer:nth-child(16) {
+  --rz-truck: 150deg;
+}
+
+.truck-layer:nth-child(17) {
+  --rz-truck: 160deg;
+}
+
+.truck-layer:nth-child(18) {
+  --rz-truck: 170deg;
+}
+
+.truck-layer:nth-child(19) {
+  --rz-truck: 180deg;
+}
+
+.truck-layer:nth-child(20) {
+  --rz-truck: 190deg;
+}
+
+.deck-layer:nth-child(2) .trucks-base {
+  background-color: var(--clr-trucks-base);
+}
+
+.trucks-trapezoid {
+  --trucks-trapezoid-size: 55px;
+  position: absolute;
+  inset: 0;
+  width: calc(var(--trucks-trapezoid-size) / 5);
+  height: var(--trucks-trapezoid-size);
+  margin: auto;
+  transform: translateX(10.5px) translateZ(1px);
+}
+
+.trucks-trapezoid-layer {
+  clip-path: polygon(0 0, 100% 40%, 100% 60%, 0% 100%);
+  background-color: var(--clr-trucks-main);
+  box-shadow: inset 0 0 0.5px 0.4px var(--clr-trucks-base);
+  position: absolute;
+  inset: 0;
+  transform-origin: right;
+  transform: translateZ(var(--tz-trucks-trapezoid))
+    rotateY(var(--ry-trucks-trapezoid));
+}
+
+.trucks-trapezoid-layer:nth-child(1) {
+  --tz-trucks-trapezoid: 0px;
+  --ry-trucks-trapezoid: 0deg;
+}
+
+.trucks-trapezoid-layer:nth-child(2) {
+  --tz-trucks-trapezoid: 0.1px;
+  --ry-trucks-trapezoid: 2deg;
+}
+
+.trucks-trapezoid-layer:nth-child(3) {
+  --tz-trucks-trapezoid: 0.2px;
+  --ry-trucks-trapezoid: 4deg;
+}
+
+.trucks-trapezoid-layer:nth-child(4) {
+  --tz-trucks-trapezoid: 0.3px;
+  --ry-trucks-trapezoid: 6deg;
+}
+
+.trucks-trapezoid-layer:nth-child(5) {
+  --tz-trucks-trapezoid: 0.4px;
+  --ry-trucks-trapezoid: 8deg;
+}
+
+.trucks-trapezoid-layer:nth-child(6) {
+  --tz-trucks-trapezoid: 0.5px;
+  --ry-trucks-trapezoid: 10deg;
+}
+
+.trucks-trapezoid-layer:nth-child(7) {
+  --tz-trucks-trapezoid: 0.6px;
+  --ry-trucks-trapezoid: 12deg;
+}
+
+.trucks-trapezoid-layer:nth-child(8) {
+  --tz-trucks-trapezoid: 0.7px;
+  --ry-trucks-trapezoid: 14deg;
+}
+
+.trucks-trapezoid-layer:nth-child(9) {
+  --tz-trucks-trapezoid: 0.8px;
+  --ry-trucks-trapezoid: 16deg;
+}
+
+.trucks-trapezoid-layer:nth-child(10) {
+  --tz-trucks-trapezoid: 0.9px;
+  --ry-trucks-trapezoid: 18deg;
+}
+
+.trucks-triangle {
+  --trucks-triangle-size: 18px;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: calc(var(--trucks-triangle-size));
+  transform-origin: left;
+  transform: translateX(10px) translateZ(3px) rotateY(-65deg);
+  box-shadow: inset 0 0 0.5px 0.5px var(--clr-trucks-base);
+}
+
+.trucks-triangle.top {
+  clip-path: polygon(0 0, 100% 50%, 100% 50%, 0 50%);
+  background-image: radial-gradient(
+    100% 70% at 100% -20%,
+    transparent 100%,
+    var(--clr-trucks-main) 100%
+  );
+}
+
+.trucks-triangle.bottom {
+  background-image: radial-gradient(
+    100% 70% at 100% 120%,
+    transparent 100%,
+    var(--clr-trucks-main) 100%
+  );
+  clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 100%);
+}
+
+.tail .trucks-trapezoid {
+  transform: translateZ(1px) rotate(180deg) translateX(11px);
+}
+
+.nose .trucks-triangle {
+  transform: translateX(1px) translateZ(3px) rotateY(245deg);
+}
+
+/* TRUCKS BOLTS */
+.trucks-trapezoid-layer::after {
+  content: "";
+  position: absolute;
+  width: 5.5px;
+  aspect-ratio: 1;
+  inset: 0;
+  left: 1px;
+  margin: auto;
+  background-color: var(--clr-trucks-main);
+  border: 1px solid var(--clr-hardware-cross);
+  outline: 1px solid var(--clr-hardware-light);
+  border-radius: 50%;
+  transform: rotateX(40deg);
+}
+
+/* ANIMATIONS */
+@keyframes kickflip {
+  0% {
+    transform: translateY(0) rotateX(var(--skateboard-rotatation-x))
+      rotateZ(var(--skateboard-rotatation-z));
+  }
+  20% {
+    transform: translateY(-90px) rotateX(var(--skateboard-rotatation-x))
+      rotateZ(var(--skateboard-rotatation-z)) rotateY(30deg);
+  }
+  30% {
+    transform: translateY(-150px) rotateX(var(--skateboard-rotatation-x))
+      rotateZ(var(--skateboard-rotatation-z)) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-120px)
+      rotateX(calc(var(--skateboard-rotatation-x) + 360deg))
+      rotateZ(var(--skateboard-rotatation-z)) rotateY(-10deg);
+  }
+  75% {
+    transform: translateY(0px)
+      rotateX(calc(var(--skateboard-rotatation-x) + 360deg))
+      rotateZ(var(--skateboard-rotatation-z)) rotateY(5deg);
+  }
+  80% {
+    transform: translateY(0px)
+      rotateX(calc(var(--skateboard-rotatation-x) + 360deg))
+      rotateZ(var(--skateboard-rotatation-z));
+  }
+  100% {
+    transform: translateY(0)
+      rotateX(calc(var(--skateboard-rotatation-x) + 360deg))
+      rotateZ(var(--skateboard-rotatation-z));
+  }
+}
+
+.flip-button {
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  background-color: var(--clr-trucks-base-light);
+  color: var(--clr-trucks-main);
+  cursor: pointer;
+}
+
+.controls {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  display: grid;
+  place-content: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
