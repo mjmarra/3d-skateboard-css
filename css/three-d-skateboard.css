@@ -136,6 +136,7 @@
 /* RIGHT WHEELS */
 .wheel:nth-child(4),
 .wheel:nth-child(3) {
+  bottom: auto;
   top: -12px;
   transform: rotateX(90deg) rotateY(180deg);
 }
